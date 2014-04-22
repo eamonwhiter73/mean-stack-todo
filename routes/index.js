@@ -28,6 +28,7 @@ exports.addMember = function(Member) {
         res.json({ error : error });
       } else {
         res.json({ member : member });
+        res.render('home');
       }
     });
   };

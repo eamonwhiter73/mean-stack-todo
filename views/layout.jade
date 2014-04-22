@@ -2,10 +2,13 @@ doctype html
 html(ng-app="MemberModule")
   head
     title= title
+
     link(rel='stylesheet', href='/javascripts/vendor/bootstrap-css/css/bootstrap.css')
     link(rel='stylesheet', href='/stylesheets/style.css')
-    
-    script(type='text/javascript', src='/javascripts/vendor/angular/angular.js')
+
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular.min.js"></script>
+    script(type='text/javascript', src='/javascripts/vendor/angular/route.js')
+    script(src='http://ajax.googleapis.com/ajax/libs/angularjs/1.0.3/angular-sanitize.js')
     script(type='text/javascript', src='/javascripts/vendor/angular-bootstrap/ui-bootstrap-tpls.js')
     script(src='http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js')
     script(type='text/javascript', src='/javascripts/MemberModule.js')

@@ -1,4 +1,14 @@
-var MemberModule = angular.module('MemberModule', ['ui.bootstrap']);
+var MemberModule = angular.module('MemberModule', ['ui.bootstrap', 'ngRoute']);
+
+MemberModule.config(['$routeProvider', '$locationProvider',
+    function($routeProvider, $locationProvider) {
+      $routeProvider
+        .when('/member.json', {
+          templateUrl: '/home/yz/meanstack/projects/mean-stack-todo/views/home.jade',
+          controller: 'MemberListController' })
+        .otherwise({ redirectTo: '/' });
+    }
+]);
 
 MemberModule.controller('MemberListController', function ($scope, $http) {
   $scope.members = [];
@@ -37,7 +47,6 @@ MemberModule.controller('MemberListController', function ($scope, $http) {
   $scope.addNewMember = function() {
     $http.post('/member.json', $scope.newMember).success(function(data) {
       if (data.member) {
-        alert("hello");
         $scope.members.push(data.member);
       }
       else {
