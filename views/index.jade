@@ -1,0 +1,17 @@
+extends layout
+
+block content
+  div.container(ng-controller="MemberListController", ng-init="setMembers( #{JSON.stringify(members)} )")
+    h1 Welcome
+    h2 Sign Up
+    form(novalidate, ng-submit="addNewMember()")
+      input( type="text", ng-model="newMember.username")
+      br
+      input( type="password", ng-model="newMember.password")
+      br
+      input( type="password" )
+      br
+      button.btn.btn-primary(type="submit") Submit
+    h2 Adding...
+      div {{newMember.username}}
+      div {{newMember.password}}

@@ -1,0 +1,15 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+#heady {
+  width: 100%;
+  height: 100px;
+  background-color: #2E8B57;
+}
+
