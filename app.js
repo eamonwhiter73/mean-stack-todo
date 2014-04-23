@@ -43,7 +43,10 @@ app.get('/members.json', routes.get(Member));
 
 app.put('/member/:id.json', routes.update(Member));
 
+app.get('/member.json', routes.getHome(Member));
+
 app.post('/member.json', routes.addMember(Member));
+
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

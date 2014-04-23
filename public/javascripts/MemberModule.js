@@ -53,5 +53,8 @@ MemberModule.controller('MemberListController', function ($scope, $http) {
         alert(JSON.stringify(data));
       }
     });
+    $http.get('/member.json').success(function(data, status, headers, config) {}).
+      error(function(data, status, headers, config) {
+	});
   };
 });
