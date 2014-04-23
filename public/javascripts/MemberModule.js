@@ -1,60 +1,74 @@
-var MemberModule = angular.module('MemberModule', ['ui.bootstrap', 'ngRoute']);
+var MemberModule = angular.module('MemberModule', ['ui.bootstrap', 'ngRoute', 'ngResource', 'memberControllers']);
 
 MemberModule.config(['$routeProvider', '$locationProvider',
-    function($routeProvider, $locationProvider) {
-      $routeProvider
-        .when('/member.json', {
-          templateUrl: '/home/yz/meanstack/projects/mean-stack-todo/views/home.jade',
-          controller: 'MemberListController' })
-        .otherwise({ redirectTo: '/' });
-    }
+  function($routeProvider, $locationProvider) {
+    $locationProvider.html5Mode(true);
+    $routeProvider
+      .when("/member/:id.json", {
+        templateUrl: "/home/yz/meanstack/projects/mean-stack-todo/views/templates/home.jade",
+        controller: "MemberViewController" })
+      .when("/members.json", {
+        templateUrl: '/home/yz/meanstack/projects/mean-stack-todo/views/templates/memberlist.jade',
+        controller: 'PhoneListCtrl'
+      })
+      .otherwise({
+        redirectTo: '/'
+      });
+  }
 ]);
 
-MemberModule.controller('MemberListController', function ($scope, $http) {
-  $scope.members = [];
-  $scope.newMember = {
-    done : false
-  };
+var memberControllers = angular.module('memberControllers', []);
 
-  $scope.doneFilter = { done : true };
-  $scope.notDoneFilter = { done : false };
+memberControllers.controller('MemberListController', ['$scope', '$http',
+  function ($scope, $http) {
+    $scope.members = [];
+    $scope.newMember = {
+      done : false
+    };
 
-  $scope.setMembers = function(members) {
-    $scope.members = members;
-  };
+    $scope.doneFilter = { done : true };
+    $scope.notDoneFilter = { done : false };
 
-  $scope.update = function(member) {
-    $http.put('/member/' + member._id + '.json', member).success(function(data) {
-      if (!data.member) {
-        alert(JSON.stringify(data));
-      }
-    });
-  };
+    $scope.setMembers = function(members) {
+      $scope.members = members;
+    };
 
-  $scope.updateList = function() {
-    $http.get('/members.json').success(function(data) {
-      $scope.members = data.members;
-    });
-  };
+    $scope.update = function(member) {
+      $http.put('/member/' + member._id + '.json', member).success(function(data) {
+        if (!data.member) {
+          alert(JSON.stringify(data));
+        }
+      });
+    };
 
-  setInterval(function() {
+    $scope.updateList = function() {
+      $http.get('/members.json').success(function(data) {
+        $scope.members = data.members;
+      });
+    };
+
+    setInterval(function() {
+      $scope.updateList();
+      $scope.$apply();
+    }, 30 * 60 * 1000); // update every 30 minutes;
+
     $scope.updateList();
-    $scope.$apply();
-  }, 30 * 60 * 1000); // update every 30 minutes;
 
-  $scope.updateList();
+    $scope.addNewMember = function() {
+      $http.post('/member.json', $scope.newMember).success(function(data) {
+        if (data.member) {
+          $scope.members.push(data.member);
+        }
+        else {
+          alert(JSON.stringify(data));
+        }
+      });
+    };
+  }
+]);
 
-  $scope.addNewMember = function() {
-    $http.post('/member.json', $scope.newMember).success(function(data) {
-      if (data.member) {
-        $scope.members.push(data.member);
-      }
-      else {
-        alert(JSON.stringify(data));
-      }
-    });
-    $http.get('/member.json').success(function(data, status, headers, config) {}).
-      error(function(data, status, headers, config) {
-	});
-  };
-});
+memberControllers.controller('MemberViewController', ['$scope', '$routeParams',
+  function($scope, $routeParams) {
+    $scope.member.id = $routeParams.member.id;
+  }
+]);

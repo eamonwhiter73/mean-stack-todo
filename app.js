@@ -43,7 +43,10 @@ app.get('/members.json', routes.get(Member));
 
 app.put('/member/:id.json', routes.update(Member));
 
-app.get('/member.json', routes.getHome(Member));
+app.get('/templates/:name', function (req, res) {
+  var name = req.params.name;
+  res.render('templates/' + name);
+});
 
 app.post('/member.json', routes.addMember(Member));
 
