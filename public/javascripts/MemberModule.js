@@ -1,24 +1,20 @@
-var MemberModule = angular.module('MemberModule', ['ui.bootstrap', 'ngRoute', 'memberControllers']);
+var MemberModule = angular.module('MemberModule', ['ui.bootstrap', 'ngRoute']);
 
-MemberModule.config(function ($routeProvider, $locationProvider) {
-  $locationProvider.html5Mode(true);
-
-  $routeProvider
-    .when('/member/:id.json', {
-      templateUrl: '/templates/home.jade',
-      controller: MemberListCtrl
-    });
-});
-
-var memberControllers = angular.module('memberControllers', []);
-
-memberControllers.controller('MemberListCtrl', ['$scope', '$routeParams',
+MemberModule.controller('MemberListCtrl', ['$scope', '$routeParams',
   function ($scope, $routeParams) {
     $scope.id = $routeParams.id;
   }
 ]);
 
-memberControllers.controller('MemberListController', ['$scope', '$http',
+MemberModule.config(function ($routeProvider, $locationProvider) {
+  $locationProvider.html5Mode(true);
+  $routeProvider
+    .when('/member/:id.json', {
+      templateUrl: '/templates/home.jade',
+    });
+});
+
+MemberModule.controller('MemberListController', ['$scope', '$http',
   function ($scope, $http) {
     $scope.members = [];
     $scope.newMember = {
