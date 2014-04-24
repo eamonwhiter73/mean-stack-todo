@@ -33,23 +33,20 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
-/*app.get('/', function(req, res) {
+app.get('/', function(req, res) {
   res.render('index'); // load the single view file (angular will handle the page changes on the front-end)
-});*/
+});
 
-app.get('/', routes.index(Member));
 app.get('/users', user.list);
 app.get('/members.json', routes.get(Member));
 
-app.put('/member/:id.json', routes.update(Member));
-
 app.get('/templates/:name', function (req, res) {
-  var name = req.params.name;
-  res.render('templates/' + name);
+    res.render('templates/' + req.params.name);
 });
 
-app.post('/member.json', routes.addMember(Member));
+app.put('/member/:id.json', routes.update(Member));
 
+app.post('/member.json', routes.addMember(Member));
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

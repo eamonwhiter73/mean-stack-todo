@@ -11,9 +11,9 @@ block content
       br
       input( type="password" )
       br
-      button.btn.btn-primary(type="submit") Submit
+      button.btn.btn-primary(class="submit", type="submit") Submit
     h2 Adding...
       div {{newMember.username}}
       div {{newMember.password}}
 
-    div(ng-view)
+  div(ng-view)

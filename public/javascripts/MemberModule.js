@@ -1,23 +1,22 @@
-var MemberModule = angular.module('MemberModule', ['ui.bootstrap', 'ngRoute', 'ngResource', 'memberControllers']);
+var MemberModule = angular.module('MemberModule', ['ui.bootstrap', 'ngRoute', 'memberControllers']);
 
-MemberModule.config(['$routeProvider', '$locationProvider',
-  function($routeProvider, $locationProvider) {
-    $locationProvider.html5Mode(true);
-    $routeProvider
-      .when("/member/:id.json", {
-        templateUrl: "/home/yz/meanstack/projects/mean-stack-todo/views/templates/home.jade",
-        controller: "MemberViewController" })
-      .when("/members.json", {
-        templateUrl: '/home/yz/meanstack/projects/mean-stack-todo/views/templates/memberlist.jade',
-        controller: 'PhoneListCtrl'
-      })
-      .otherwise({
-        redirectTo: '/'
-      });
-  }
-]);
+MemberModule.config(function ($routeProvider, $locationProvider) {
+  $locationProvider.html5Mode(true);
+
+  $routeProvider
+    .when('/member/:id.json', {
+      templateUrl: '/templates/home.jade',
+      controller: MemberListCtrl
+    });
+});
 
 var memberControllers = angular.module('memberControllers', []);
+
+memberControllers.controller('MemberListCtrl', ['$scope', '$routeParams',
+  function ($scope, $routeParams) {
+    $scope.id = $routeParams.id;
+  }
+]);
 
 memberControllers.controller('MemberListController', ['$scope', '$http',
   function ($scope, $http) {
@@ -58,6 +57,9 @@ memberControllers.controller('MemberListController', ['$scope', '$http',
       $http.post('/member.json', $scope.newMember).success(function(data) {
         if (data.member) {
           $scope.members.push(data.member);
+          $http.get('/member/:id.json').success(function() {});
+          $scope.newMember.username = '';
+          $scope.newMember.password = '';
         }
         else {
           alert(JSON.stringify(data));
@@ -67,8 +69,7 @@ memberControllers.controller('MemberListController', ['$scope', '$http',
   }
 ]);
 
-memberControllers.controller('MemberViewController', ['$scope', '$routeParams',
+/*memberControllers.controller('MemberCtrl', ['$scope', '$routeParams',
   function($scope, $routeParams) {
-    $scope.member.id = $routeParams.member.id;
-  }
-]);
+    $scope.phoneId = $routeParams.phoneId;
+}]);*/

@@ -25,7 +25,7 @@ exports.addMember = function(Member) {
     var member = new Member(req.body);
       member.save(function(error, member) {
       if (error || !member) {
-        console.log(res.json({ error : error }));
+        res.json({ error : error });
       } else {
         res.json({ member : member });
       }
@@ -40,15 +40,6 @@ exports.get = function(Member) {
     });
   }
 };
-
-exports.getHome = function(Member) {
-  return function(req, res) {
-    Member.find({}, function(error, members) {
-      res.render('home');
-      res.json({ members : members });
-    });
-  }
-}
 
 exports.update = function(Member) {
   return function(req, res) {
